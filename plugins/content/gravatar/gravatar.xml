@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.1" type="plugin" group="content">
+	<name>plg_content_gravatar</name>
+	<author>Viper</author>
+	<creationDate>Feb 2014</creationDate>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>web@libra.ms</authorEmail>
+	<authorUrl>www.joomla.org</authorUrl>
+	<version>1.0.0</version>
+	<description>PLG_GRAVATAR_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="gravatar">gravatar.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB/en-GB.plg_content_gravatar.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_content_gravatar.sys.ini</language>
+		<language tag="ru-RU">ru-RU/ru-RU.plg_content_gravatar.ini</language>
+		<language tag="ru-RU">ru-RU/ru-RU.plg_content_gravatar.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="thumb_size" type="text" default="80" size="30" maxlength="4" label="PLG_PARAMS_TARGET" description="PLG_PARAMS_TARGET_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
