@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @package     Joomla.Plugin
  * @subpackage  Content.gravatar
- * @since       1.5
+ * @since       3.2
  */
 class PlgContentGravatar extends JPlugin
 {
@@ -22,9 +22,27 @@ class PlgContentGravatar extends JPlugin
 	 * Load the language file on instantiation.
 	 *
 	 * @var    boolean
-	 * @since  3.1
+	 * @since  3.2
 	 */
 	protected $autoloadLanguage = true;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   object  &$subject  The object to observe
+	 * @param   array   $config    An optional associative array of configuration settings.
+	 *                             Recognized key values include 'name', 'group', 'params', 'language'
+	 *                             (this list is not meant to be comprehensive).
+	 *
+	 * @since   3.2
+	 */
+	public function __construct(&$subject, $config = array()) {
+		parent::__construct($subject, $config);
+
+		JHtml::_('jquery.framework');
+		JHtml::script(JURI::base().'plugins/content/gravatar/assets/js/gravatar.js');
+		JHtml::stylesheet(JURI::base().'plugins/content/gravatar/assets/css/gravatar.css');
+	}
 
 	/**
 	 * Displays the voting area if in an article
@@ -51,11 +69,83 @@ class PlgContentGravatar extends JPlugin
 
 		if ($data_format == 'json') {
 			$profile_obj = json_decode($profile);
+
+			if (is_object($profile_obj)) {
+				$profile_item = $profile_obj->entry[0];
+			} else {
+				$profile_item = array();
+			}
 		}
-echo '<pre>';
-		print_r($profile_obj);
-		$html = '<a href="'.$this->getGravatarServer($lang_code).$email_hash.'" rel="nofollow"><img src="'.$this->buildAvatarUrl($email_hash, $this->params->get('thumb_size')).'" border="0" /></a>';
-echo '</pre>';
+
+		$username = (isset($profile_item->displayName) && !empty($profile_item->displayName)) ? $profile_item->displayName : $user->name;
+		$profile_link = $this->getGravatarServer($lang_code).$email_hash;
+
+		if (isset($profile_item->name)) {
+			$profile_name_obj = $profile_item->name;
+			$first_name = isset($profile_name_obj->givenName) ? $profile_name_obj->givenName : $username;
+			$last_name = isset($profile_name_obj->familyName) ? $profile_name_obj->familyName : '';
+		} else {
+			$first_name = $username;
+			$last_name = '';
+		}
+
+		$location = isset($profile_item->currentLocation) ? $profile_item->currentLocation : '';
+		$about = isset($profile_item->aboutMe) ? $profile_item->aboutMe : '';
+
+		$html = '<div class="gravatar-profile">
+			<div class="gravatar-profile-shortinfo">
+				<a href="'.$profile_link.'" rel="nofollow" class="gravatar-profile-avatar"><img src="'.$this->buildAvatarUrl($email_hash, $this->params->get('thumb_size')).'" border="0" /></a>
+				<span class="muted createdby">'.JText::sprintf('COM_CONTENT_WRITTEN_BY', '<a href="'.$profile_link.'" class="profile-link hasTooltip" title="'.JText::sprintf('PLG_GRAVATAR_LINK_TITLE', $username).'">'.$username.'</a>').'</span>
+			</div>
+			<div class="gravatar-profile-info">
+				<div class="left-col">';
+				if (!empty($first_name)) {
+					$html .= '<h2 class="item-title"><a href="'.$profile_link.'" target="_blank" rel="nofollow">'.$first_name.'</a></h2>';
+				}
+					$html .= '<span class="location small">'.$location.'</span>
+					<span class="about">'.$about.'</span>';
+
+					if (isset($profile_item->accounts)) {
+						$html .= '<h3>'.JText::_('PLG_GRAVATAR_PROFILE_ONLINE').'</h3>';
+
+						foreach ($profile_item->accounts as $account) {
+							$html .= '<a href="'.$account->url.'" class="gravatar-linked-profiles '.$account->shortname.'" rel="nofollow" target="_blank">'.$account->display.'</a>';
+						}
+					}
+
+					if (isset($profile_item->ims)) {
+						$html .= '<h3>'.JText::_('PLG_GRAVATAR_PROFILE_CONTACTS').'</h3>';
+
+						foreach ($profile_item->ims as $im) {
+							if ($im->type == 'aim') {
+								$url = $im->type.':goim?screenname='.$im->value;
+							} elseif ($im->type == 'skype') {
+								$url = $im->type.':'.$im->value;
+							} else {
+								$url = '#';
+							}
+
+							$html .= '<a href="'.$url.'" class="gravatar-linked-im '.$im->type.'" rel="nofollow">'.ucfirst($im->type).'</a>';
+						}
+					}
+
+				$html .= '</div>
+				<div class="right-col">
+					<div class="gravatar-photo-big"><img src="'.$this->buildAvatarUrl($email_hash, $this->params->get('photo_size')).'" /></div>';
+
+					if (isset($profile_item->urls) && count($profile_item->urls) > 0) {
+						$html .= '<h3>'.JText::_('PLG_GRAVATAR_PROFILE_WEBSITES').'</h3>';
+
+						foreach ($profile_item->urls as $url) {
+							$html .= '<a href="'.$url->value.'" class="gravatar-linked-web" rel="nofollow">'.ucfirst($im->title).'</a>';
+						}
+					}
+
+				$html .= '</div>
+			</div>
+		</div>
+		<div class="clear"></div>';
+
 		return $html;
 	}
 

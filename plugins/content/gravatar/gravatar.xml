@@ -21,7 +21,8 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="thumb_size" type="text" default="80" size="30" maxlength="4" label="PLG_PARAMS_TARGET" description="PLG_PARAMS_TARGET_DESC" />
+				<field name="thumb_size" type="text" default="40" size="30" maxlength="4" label="PLG_GRAVATAR_PARAMS_THUMB_SIZE" description="PLG_GRAVATAR_PARAMS_THUMB_SIZE" filter="integer" />
+				<field name="photo_size" type="text" default="200" size="30" maxlength="4" label="PLG_GRAVATAR_PARAMS_PHOTO_SIZE" description="PLG_GRAVATAR_PARAMS_PHOTO_SIZE" filter="integer" />
 			</fieldset>
 		</fields>
 	</config>
