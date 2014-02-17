@@ -39,7 +39,15 @@ class PlgContentGravatar extends JPlugin
 	public function __construct(&$subject, $config = array()) {
 		parent::__construct($subject, $config);
 
-		JHtml::_('jquery.framework');
+		// Support Joomla 2.x
+		if (substr(JPlatform::getShortVersion(), 0, 2) == 11) {
+			$this->loadLanguage();
+
+			JHtml::script(JURI::base().'plugins/content/gravatar/assets/js/jquery-1.11.0.min.js');
+		} else {
+			JHtml::_('jquery.framework');
+		}
+
 		JHtml::script(JURI::base().'plugins/content/gravatar/assets/js/gravatar.js');
 		JHtml::stylesheet(JURI::base().'plugins/content/gravatar/assets/css/gravatar.css');
 	}

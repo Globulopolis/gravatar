@@ -9,10 +9,11 @@
 	<version>1.0.1</version>
 	<description>PLG_GRAVATAR_XML_DESCRIPTION</description>
 	<files>
+		<folder>assets</folder>
 		<filename plugin="gravatar">gravatar.php</filename>
 		<filename>index.html</filename>
 	</files>
-	<languages>
+	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.plg_content_gravatar.ini</language>
 		<language tag="en-GB">en-GB/en-GB.plg_content_gravatar.sys.ini</language>
 		<language tag="ru-RU">ru-RU/ru-RU.plg_content_gravatar.ini</language>
