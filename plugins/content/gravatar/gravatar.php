@@ -94,7 +94,7 @@ class PlgContentGravatar extends JPlugin
 
 		$html = '<div class="gravatar-profile">
 			<div class="gravatar-profile-shortinfo">
-				<a href="'.$profile_link.'" rel="nofollow" class="gravatar-profile-avatar"><img src="'.$this->buildAvatarUrl($email_hash, $this->params->get('thumb_size')).'" border="0" /></a>
+				<a href="'.$profile_link.'" rel="nofollow" class="gravatar-profile-avatar hasTooltip" title="'.JText::_('PLG_GRAVATAR_LINK_PROFILE_VIEW').'"><img src="'.$this->buildAvatarUrl($email_hash, $this->params->get('thumb_size')).'" border="0" /></a>
 				<span class="muted createdby">'.JText::sprintf('COM_CONTENT_WRITTEN_BY', '<a href="'.$profile_link.'" class="profile-link hasTooltip" title="'.JText::sprintf('PLG_GRAVATAR_LINK_TITLE', $username).'">'.$username.'</a>').'</span>
 			</div>
 			<div class="gravatar-profile-info">
@@ -118,30 +118,58 @@ class PlgContentGravatar extends JPlugin
 
 						foreach ($profile_item->ims as $im) {
 							if ($im->type == 'aim') {
-								$url = $im->type.':goim?screenname='.$im->value;
+								$html .= '<span class="gravatar-linked-im aim"><a href="aim:goim?screenname='.$im->value.'" rel="nofollow">'.ucfirst($im->type).'</a>: '.$im->value.'</span>';
 							} elseif ($im->type == 'skype') {
-								$url = $im->type.':'.$im->value;
+								$html .= '<span class="gravatar-linked-im skype"><a href="skype:'.$im->value.'" rel="nofollow">'.ucfirst($im->type).'</a>: '.$im->value.'</span>';
+							} elseif ($im->type == 'icq') {
+								$html .= '<span class="gravatar-linked-im icq"><a href="icq:message?uin='.$im->value.'" rel="nofollow">'.ucfirst($im->type).'</a>: '.$im->value.'</span>';
+							} elseif ($im->type == 'msn') {
+								$html .= '<span class="gravatar-linked-im msn"><a href="msnim:chat?contact='.$im->value.'@" rel="nofollow">'.ucfirst($im->type).'</a>: '.$im->value.'</span>';
+							} elseif ($im->type == 'yahoo') {
+								$html .= '<span class="gravatar-linked-im yahoo"><a href="ymsgr:sendim?'.$im->value.'" rel="nofollow">'.ucfirst($im->type).'</a>: '.$im->value.'</span>';
+							} elseif ($im->type == 'gtalk') {
+								$html .= '<span class="gravatar-linked-im gtalk"><a href="xmpp:'.$im->value.'@gmail.com" rel="nofollow">'.ucfirst($im->type).'</a>: '.$im->value.'</span>';
 							} else {
-								$url = '#';
+								$html .= '<a href="#" class="'.$im->type.'" rel="nofollow">'.ucfirst($im->type).'</a>';
 							}
+						}
+					}
 
-							$html .= '<a href="'.$url.'" class="gravatar-linked-im '.$im->type.'" rel="nofollow">'.ucfirst($im->type).'</a>';
+					if (isset($profile_item->emails)) {
+						foreach ($profile_item->emails as $email) {
+							$html .= '<span class="gravatar-linked-emails"><a href="mailto:'.$email->value.'" rel="nofollow">'.$email->value.'</a></span>';
+						}
+					}
+
+					if (isset($profile_item->phoneNumbers)) {
+						foreach ($profile_item->phoneNumbers as $phone) {
+							$html .= '<span class="gravatar-linked-tel">'.JText::sprintf(JText::sprintf('PLG_GRAVATAR_PROFILE_PHONES', JText::_('PLG_GRAVATAR_PROFILE_PHONES_'.strtoupper($phone->type))), JText::_('PLG_GRAVATAR_PROFILE_PHONES_'.strtoupper($phone->type))).$phone->value.'</span>';
 						}
 					}
 
 				$html .= '</div>
 				<div class="right-col">
-					<div class="gravatar-photo-big"><img src="'.$this->buildAvatarUrl($email_hash, $this->params->get('photo_size')).'" /></div>';
+					<div class="gravatar-avatar-big">
+						<div class="gravatar-photo-big">
+							<img src="'.$this->buildAvatarUrl($email_hash, $this->params->get('photo_size')).'" />
+						</div>
+					</div>';
 
 					if (isset($profile_item->urls) && count($profile_item->urls) > 0) {
-						$html .= '<h3>'.JText::_('PLG_GRAVATAR_PROFILE_WEBSITES').'</h3>';
+						$html .= '<h3>'.JText::_('PLG_GRAVATAR_PROFILE_WEBSITES').'</h3>
+						<ul class="gravatar-linked-web">';
 
 						foreach ($profile_item->urls as $url) {
-							$html .= '<a href="'.$url->value.'" class="gravatar-linked-web" rel="nofollow">'.ucfirst($im->title).'</a>';
+							$html .= '<li>
+								<a href="'.$url->value.'" rel="nofollow" target="_blank"><img src="'.JURI::getInstance()->getScheme().'://s.wordpress.com/mshots/v1/'.urlencode($url->value).'?w=360" width="180" /><span>'.ucfirst($url->title).'</span></a>
+							</li>';
 						}
 					}
 
-				$html .= '</div>
+						$html .= '</ul>
+					</div>
+				<div class="clear"></div>
+				<div class="buttons"><button class="btn btn-primary cmd-hide">'.JText::_('JHIDE').'</button></div>
 			</div>
 		</div>
 		<div class="clear"></div>';

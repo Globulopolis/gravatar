@@ -6,7 +6,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>web@libra.ms</authorEmail>
 	<authorUrl>www.joomla.org</authorUrl>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<description>PLG_GRAVATAR_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="gravatar">gravatar.php</filename>

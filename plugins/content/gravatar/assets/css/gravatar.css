@@ -8,18 +8,33 @@ div.clear {
 }
 
 .gravatar-profile-info {
-	display: none;
 	background-color: #fff;
+	border: 5px solid #fff;
+	box-shadow: 0 1px 6px 1px #ccc;
+	-moz-box-shadow: 0 1px 6px 1px #ccc;
+	-webkit-box-shadow: 0 1px 6px 1px #ccc;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc')";
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc');
+	display: none;
+	left: 0;
+	margin: 6px; /* margins must be the same as box-shadow */
+	position: absolute;
+	z-index: 10001;
 }
-.gravatar-profile-info .left-col{
+.gravatar-profile-info .left-col {
 	float: left;
-	padding-right: 10px;
-	min-width: 128px;
-	width: 40%;
+	padding: 5px;
+	min-width: 200px;
+	width: 30%;
 }
 .gravatar-profile-info .right-col {
 	float: right;
-	width: 58%;
+	padding: 5px;
+	width: 67%;
+}
+.gravatar-profile-info .buttons {
+	margin: 5px;
+	text-align: right;
 }
 
 .gravatar-profile .location {
@@ -34,9 +49,17 @@ div.clear {
 	padding: 4px 0;
 }
 
-.gravatar-photo-big {
-	border: 5px solid #fff;
+.gravatar-avatar-big {
+	margin: 12px;
 	text-align: center;
+}
+.gravatar-avatar-big img {
+	border: 5px solid #fff;
+	box-shadow: 0 1px 6px 1px #ccc;
+	-moz-box-shadow: 0 1px 6px 1px #ccc;
+	-webkit-box-shadow: 0 1px 6px 1px #ccc;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc')";
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#cccccc');
 }
 
 .gravatar-linked-profiles {
@@ -85,4 +108,59 @@ div.clear {
 }
 .gravatar-linked-im.skype {
 	background-position: 0 -16px;
+}
+.gravatar-linked-im.msn {
+	background-position: 0 -624px;
+}
+.gravatar-linked-im.yahoo {
+	background-position: 0 -160px;
+}
+.gravatar-linked-im.gtalk {
+	background-position: 0 -640px;
+}
+
+.gravatar-linked-emails {
+	background: url('../images/grav-share-sprite.png') no-repeat;
+	background-position: 0 -112px;
+	display: block;
+	line-height: 16px;
+	margin: 4px;
+	padding-left: 20px;
+}
+
+.gravatar-linked-tel {
+	background: url('../images/grav-share-sprite.png') no-repeat;
+	background-position: 0 -576px;
+	display: block;
+	line-height: 16px;
+	margin: 4px;
+	padding-left: 20px;
+}
+
+.gravatar-linked-web {
+	margin: 0;
+	padding: 10px 0 0;
+}
+.gravatar-linked-web li {
+	float: left;
+	list-style: none outside none;
+	padding: 0 10px 10px 0;
+}
+.gravatar-linked-web a {
+	display: block;
+	text-align: center;
+}
+.gravatar-linked-web img {
+	border: 1px solid #ccc;
+    display: block;
+}
+.gravatar-linked-web span {
+	background: none repeat scroll 0 0 rgba(255, 255, 255, 0.85);
+	clear: both;
+	display: block;
+	font-size: 13px;
+	font-weight: 500;
+	padding: 8px 5px;
+	width: 171px;
+	word-wrap: break-word;
 }
