@@ -103,7 +103,7 @@ class PlgContentGravatar extends JPlugin
 		$html = '<div class="gravatar-profile">
 			<div class="gravatar-profile-shortinfo">
 				<a href="'.$profile_link.'" rel="nofollow" class="gravatar-profile-avatar hasTooltip" title="'.JText::_('PLG_GRAVATAR_LINK_PROFILE_VIEW').'"><img src="'.$this->buildAvatarUrl($email_hash, $this->params->get('thumb_size')).'" border="0" /></a>
-				<span class="muted createdby">'.JText::sprintf('COM_CONTENT_WRITTEN_BY', '<a href="'.$profile_link.'" class="profile-link hasTooltip" title="'.JText::sprintf('PLG_GRAVATAR_LINK_TITLE', $username).'">'.$username.'</a>').'</span>
+				<span class="muted createdby">'.JText::sprintf('PLG_GRAVATAR_PROFILE_WRITTEN_BY', '<a href="'.$profile_link.'" class="profile-link hasTooltip" title="'.JText::sprintf('PLG_GRAVATAR_LINK_TITLE', $username).'">'.$username.'</a>').'</span>
 			</div>
 			<div class="gravatar-profile-info">
 				<div class="left-col">';
