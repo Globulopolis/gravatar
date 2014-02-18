@@ -138,7 +138,10 @@ div.clear {
 }
 
 .gravatar-linked-web {
+	height: 180px;
 	margin: 0;
+	overflow: scroll;
+	overflow-x: hidden;
 	padding: 10px 0 0;
 }
 .gravatar-linked-web li {

@@ -226,9 +226,15 @@ class PlgContentGravatar extends JPlugin
 		}
 
 		$url = $this->getGravatarServer($lang_code).$email_hash.$url_format;
-		$result = $this->getRemoteData($url);
+		$response = $this->getRemoteData($url, array(
+			'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0'
+		), 15, array('curl', 'socket'));
 
-		return $result->body;
+		if ($response === false || $response->code != 200) {
+			return;
+		}
+
+		return $response->body;
 	}
 
 	/**
@@ -241,18 +247,16 @@ class PlgContentGravatar extends JPlugin
 	 *
 	 * @return  JHttpResponse
 	 */
-	protected function getRemoteData($url, array $headers=null, $timeout=30, $transport='curl') {
+	protected function getRemoteData($url, array $headers=null, $timeout=30, $transport='socket') {
 		$options = new JRegistry;
 
-		if (!is_array($headers)) {
-			// If we're not set up an user-agent we get a 403 error.
-			$headers = array(
-				'User-Agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:26.0) Gecko/20100101 Firefox/26.0'
-			);
-		}
-
 		$http = JHttpFactory::getHttp($options, $transport);
-		$response = $http->get($url, $headers, $timeout);
+
+		try {
+			$response = $http->get($url, $headers, $timeout);
+		} catch (Exception $e) {
+			return false;
+		}
 
 		return $response;
 	}
